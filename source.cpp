@@ -144,12 +144,15 @@ int spj(string exec_in, string exec_out, string std_out)
     string spjcmd = path["spj"] + " " + exec_in + " " + exec_out + " " + std_out + " >/dev/null";
     int status = system(spjcmd.c_str ());
     cout << "special judge returned: " << status << endl;
-    switch  (status) {
-    case 0 * STD256: return WA;
-    case 1 * STD256: return AC;
-    case 2 * STD256: return PE;
-    default: return SW;
+    if(WIFEXITED(status)){ 
+      switch  (WEXITSTATUS(status)) {
+        case 0: return WA;
+        case 1: return AC;
+        case 2: return PE;
+        default: return WEXITSTATUS(status);
+      }
     }
+    cerr << "special judge program is killed by system..." << endl;
     return SW;
 }
 
@@ -395,6 +398,7 @@ void finish(int status)
     ofstream of(path["result"].c_str ());
     of << status << endl;
     cout << "end" << endl;
+    kill(0, SIGKILL);
     exit(status);
 }
 
