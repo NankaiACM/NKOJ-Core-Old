@@ -124,18 +124,19 @@ void re_time()
 
 int compare(string exec_in, string exec_out, string diff_out)
 {
-    string difcmd = string("diff ") + exec_in + " " + exec_out + " >" + diff_out;
+    // string difcmd = string("diff ") + exec_in + " " + exec_out + " >" + diff_out;
 
+    // int status = system(difcmd.c_str());
+
+    // if (status == 0 * STD256)
+    //     return AC;
+
+    string difcmd = string("diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-case --brief ") + exec_in + " " + exec_out + " >" + diff_out;
     int status = system(difcmd.c_str());
 
     if (status == 0 * STD256)
+        // return PE;
         return AC;
-
-    difcmd = string("diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-case --brief ") + exec_in + " " + exec_out + " >" + diff_out;
-    status = system(difcmd.c_str());
-
-    if (status == 0 * STD256)
-        return PE;
     return WA;
 }
 
