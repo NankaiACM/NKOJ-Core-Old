@@ -506,7 +506,7 @@ int main(){
     
     //compile special judge (online support for c++)
     if(is_spj == 1){
-        string spj_compile_command = "g++" + path["spj"] + ".cpp -o " + path["spj"]; 
+        string spj_compile_command = "g++ " + path["spj"] + ".cpp -o " + path["spj"]; 
         cout<< "spj compile command:" << spj_compile_command << endl;
         pid = fork();
         if(pid == 0) {
