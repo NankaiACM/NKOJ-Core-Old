@@ -124,24 +124,27 @@ void re_time()
 
 int compare(string exec_in, string exec_out, string diff_out)
 {
-    string difcmd = string("diff ") + exec_in + " " + exec_out + " >" + diff_out;
+    // string difcmd = string("diff ") + exec_in + " " + exec_out + " >" + diff_out;
 
+    // int status = system(difcmd.c_str());
+
+    // if (status == 0 * STD256)
+    //     return AC;
+
+    string difcmd = string("diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-case --brief ") + exec_in + " " + exec_out + " >" + diff_out;
     int status = system(difcmd.c_str());
 
     if (status == 0 * STD256)
+        // return PE;
         return AC;
-
-    difcmd = string("diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-case --brief ") + exec_in + " " + exec_out + " >" + diff_out;
-    status = system(difcmd.c_str());
-
-    if (status == 0 * STD256)
-        return PE;
     return WA;
 }
 
 int spj(string exec_in, string exec_out, string std_out)
 {
     string spjcmd = path["spj"] + " " + exec_in + " " + exec_out + " " + std_out + " >/dev/null";
+    
+    cout << "spjfile "<<spjcmd << endl;
     int status = system(spjcmd.c_str ());
     cout << "special judge returned: " << status << endl;
     if(WIFEXITED(status)){ 
@@ -234,7 +237,7 @@ int dotest(unsigned which_case)
         nice(10);
 
         // TODO...
-//        if ( language == LANGUAGE_JAVA ) { //JAVAä½¿ç”¨å†…ç½®çš„å®‰å…¨ç®¡ç†å™¨ï¼Œè€Œä¸èƒ½ä½¿ç”¨ptraceï¼Œå› ä¸ºjavaæœ¬èº«è‚¯å®šéœ€è¦è¿›è¡Œç³»ç»Ÿæ‰ç”¨
+//        if ( language == LANGUAGE_JAVA ) { //JAVAÊ¹ÓÃÄÚÖÃµÄ°²È«¹ÜÀíÆ÷£¬¶ø²»ÄÜÊ¹ÓÃptrace£¬ÒòÎªjava±¾Éí¿Ï¶¨ĞèÒª½øĞĞÏµÍ³µôÓÃ
 //            sprintf(exec_cmd, "%s%s/", PATH_EXEC, solution_id);
 //            sprintf(temp, "1>%s", exec_out);
 //            ptrace(PTRACE_TRACEME, 0, (char *)1, 0);
@@ -294,7 +297,7 @@ int dotest(unsigned which_case)
                         }
                     }
 
-                    if (orig_eax != __NR_read && orig_eax != __NR_write){  		//é¿å…è¯»å†™é™·å…¥æ­»å¾ªç¯åï¼Œè°ƒç”¨å¤ªå¤šï¼Œå¯¼è‡´æ€§èƒ½é™ä½
+                    if (orig_eax != __NR_read && orig_eax != __NR_write){  		//±ÜÃâ¶ÁĞ´ÏİÈëËÀÑ­»·ºó£¬µ÷ÓÃÌ«¶à£¬µ¼ÖÂĞÔÄÜ½µµÍ
                         check_mem = getpidmem(pid);
                         if (check_mem > check_max_mem)
                             check_max_mem = check_mem;
@@ -512,7 +515,7 @@ int main(){
 
     int result = SW;
 
-    if (cases == 0)          //å•æµ‹è¯•æ•°æ®
+    if (cases == 0)          //µ¥²âÊÔÊı¾İ
     {
         result = dotest(1);
         finish (result);
@@ -572,228 +575,228 @@ int flimit(long orig_eax)
     int ret=0;
     switch (orig_eax)
     {
-    case __NR_exit: F_YES ;  break;//  1ä¸­æ­¢è¿›ç¨‹
-    case __NR_fork: F_NO ;   break;//  2åˆ›å»ºä¸€ä¸ªæ–°è¿›ç¨‹
-    case __NR_read: F_YES ;  break;//  3readè¯»æ–‡ä»¶
-    case __NR_write:F_YES ;   break;//  4writeå†™æ–‡ä»¶
-    case __NR_open: F_NO ;  break;//  5openæ‰“å¼€æ–‡ä»¶
-    case __NR_close: F_NO ;  break;//  6closeå…³é—­æ–‡ä»¶æè¿°å­—
-    case __NR_waitpid: F_NO ;  break;//  7ç­‰å¾…å­è¿›ç¨‹ç»ˆæ­¢
-    case __NR_creat: F_NO ;  break;//  8creatåˆ›å»ºæ–°æ–‡ä»¶
-    case __NR_link: F_NO ;  break;//  9åˆ›å»ºé“¾æ¥
-    case __NR_unlink: F_NO ;  break;// 10åˆ é™¤é“¾æ¥
-    case __NR_execve:nSensitiveCall++; if (nSensitiveCall>2) F_NO ;  break;// 11è¿è¡Œå¯æ‰§è¡Œæ–‡ä»¶
-    case __NR_chdir: F_NO ;  break;// 12æ”¹å˜å½“å‰å·¥ä½œç›®å½•
-    case __NR_time: F_NO ;  break;// 13å–å¾—ç³»ç»Ÿæ—¶é—´
-    case __NR_mknod: F_NO ;  break;// 14åˆ›å»ºç´¢å¼•èŠ‚ç‚¹
-    case __NR_chmod: F_NO ;  break;// 15æ”¹å˜æ–‡ä»¶æ–¹å¼
-    case __NR_lchown:F_NO ;   break;// 16æ”¹å˜æ–‡ä»¶çš„å±ä¸»æˆ–ç”¨æˆ·ç»„
+    case __NR_exit: F_YES ;  break;//  1ÖĞÖ¹½ø³Ì
+    case __NR_fork: F_NO ;   break;//  2´´½¨Ò»¸öĞÂ½ø³Ì
+    case __NR_read: F_YES ;  break;//  3read¶ÁÎÄ¼ş
+    case __NR_write:F_YES ;   break;//  4writeĞ´ÎÄ¼ş
+    case __NR_open: F_NO ;  break;//  5open´ò¿ªÎÄ¼ş
+    case __NR_close: F_NO ;  break;//  6close¹Ø±ÕÎÄ¼şÃèÊö×Ö
+    case __NR_waitpid: F_NO ;  break;//  7µÈ´ı×Ó½ø³ÌÖÕÖ¹
+    case __NR_creat: F_NO ;  break;//  8creat´´½¨ĞÂÎÄ¼ş
+    case __NR_link: F_NO ;  break;//  9´´½¨Á´½Ó
+    case __NR_unlink: F_NO ;  break;// 10É¾³ıÁ´½Ó
+    case __NR_execve:nSensitiveCall++; if (nSensitiveCall>2) F_NO ;  break;// 11ÔËĞĞ¿ÉÖ´ĞĞÎÄ¼ş
+    case __NR_chdir: F_NO ;  break;// 12¸Ä±äµ±Ç°¹¤×÷Ä¿Â¼
+    case __NR_time: F_NO ;  break;// 13È¡µÃÏµÍ³Ê±¼ä
+    case __NR_mknod: F_NO ;  break;// 14´´½¨Ë÷Òı½Úµã
+    case __NR_chmod: F_NO ;  break;// 15¸Ä±äÎÄ¼ş·½Ê½
+    case __NR_lchown:F_NO ;   break;// 16¸Ä±äÎÄ¼şµÄÊôÖ÷»òÓÃ»§×é
     case __NR_break:   break;// 17
-    case __NR_oldstat:   break;// 18å–æ–‡ä»¶çŠ¶æ€ä¿¡æ¯
-    case __NR_lseek:   break;// 19ç§»åŠ¨æ–‡ä»¶æŒ‡é’ˆ
-    case __NR_getpid:F_NO;   break;// 20è·å–è¿›ç¨‹æ ‡è¯†å·
-    case __NR_mount: F_NO ;  break;// 21å®‰è£…æ–‡ä»¶ç³»ç»Ÿ
-    case __NR_umount: F_NO ;  break;// 22å¸ä¸‹æ–‡ä»¶ç³»ç»Ÿ
-    case __NR_setuid: F_NO ;  break;// 23è®¾ç½®ç”¨æˆ·æ ‡å¿—å·
-    case __NR_getuid: F_YES ;  break;// 24è·å–ç”¨æˆ·æ ‡è¯†å·
-    case __NR_stime: F_NO ;  break;// 25è®¾ç½®ç³»ç»Ÿæ—¥æœŸå’Œæ—¶é—´
-    case __NR_ptrace:F_NO ;   break;// 26è¿›ç¨‹è·Ÿè¸ª
-    case __NR_alarm: F_NO ;  break;// 27è®¾ç½®è¿›ç¨‹çš„é—¹é’Ÿ
-    case __NR_oldfstat:   break;// 28å–æ–‡ä»¶çŠ¶æ€ä¿¡æ¯
-    case __NR_pause: F_NO ;  break;// 29æŒ‚èµ·è¿›ç¨‹ï¼Œç­‰å¾…ä¿¡å·
-    case __NR_utime: F_NO ;  break;// 30æ”¹å˜æ–‡ä»¶çš„è®¿é—®ä¿®æ”¹æ—¶é—´
+    case __NR_oldstat:   break;// 18È¡ÎÄ¼ş×´Ì¬ĞÅÏ¢
+    case __NR_lseek:   break;// 19ÒÆ¶¯ÎÄ¼şÖ¸Õë
+    case __NR_getpid:F_NO;   break;// 20»ñÈ¡½ø³Ì±êÊ¶ºÅ
+    case __NR_mount: F_NO ;  break;// 21°²×°ÎÄ¼şÏµÍ³
+    case __NR_umount: F_NO ;  break;// 22Ğ¶ÏÂÎÄ¼şÏµÍ³
+    case __NR_setuid: F_NO ;  break;// 23ÉèÖÃÓÃ»§±êÖ¾ºÅ
+    case __NR_getuid: F_YES ;  break;// 24»ñÈ¡ÓÃ»§±êÊ¶ºÅ
+    case __NR_stime: F_NO ;  break;// 25ÉèÖÃÏµÍ³ÈÕÆÚºÍÊ±¼ä
+    case __NR_ptrace:F_NO ;   break;// 26½ø³Ì¸ú×Ù
+    case __NR_alarm: F_NO ;  break;// 27ÉèÖÃ½ø³ÌµÄÄÖÖÓ
+    case __NR_oldfstat:   break;// 28È¡ÎÄ¼ş×´Ì¬ĞÅÏ¢
+    case __NR_pause: F_NO ;  break;// 29¹ÒÆğ½ø³Ì£¬µÈ´ıĞÅºÅ
+    case __NR_utime: F_NO ;  break;// 30¸Ä±äÎÄ¼şµÄ·ÃÎÊĞŞ¸ÄÊ±¼ä
     case __NR_stty: F_NO ;  break;// 31
     case __NR_gtty: F_NO ;  break;// 32
-    case __NR_access:   break;// 33ç¡®å®šæ–‡ä»¶çš„å¯å­˜å–æ€§
-    case __NR_nice: F_NO ;  break;// 34æ”¹å˜åˆ†æ—¶è¿›ç¨‹çš„ä¼˜å…ˆçº§
+    case __NR_access:   break;// 33È·¶¨ÎÄ¼şµÄ¿É´æÈ¡ĞÔ
+    case __NR_nice: F_NO ;  break;// 34¸Ä±ä·ÖÊ±½ø³ÌµÄÓÅÏÈ¼¶
     case __NR_ftime: F_NO ;  break;// 35
-    case __NR_sync:   break;// 36å°†å†…å­˜ç¼“å†²åŒºæ•°æ®å†™å›ç¡¬ç›˜
-    case __NR_kill: F_NO ;  break;// 37å‘è¿›ç¨‹æˆ–è¿›ç¨‹ç»„å‘ä¿¡å·
-    case __NR_rename: F_NO ;  break;// 38æ–‡ä»¶æ”¹å
-    case __NR_mkdir: F_NO ;  break;// 39åˆ›å»ºç›®å½•
-    case __NR_rmdir: F_NO ;  break;// 40åˆ é™¤ç›®å½•
-    case __NR_dup:   break;// 41å¤åˆ¶å·²æ‰“å¼€çš„æ–‡ä»¶æè¿°å­—
-    case __NR_pipe: F_NO ;  break;// 42åˆ›å»ºç®¡é“
-    case __NR_times: F_NO ;  break;// 43å–è¿›ç¨‹è¿è¡Œæ—¶é—´
+    case __NR_sync:   break;// 36½«ÄÚ´æ»º³åÇøÊı¾İĞ´»ØÓ²ÅÌ
+    case __NR_kill: F_NO ;  break;// 37Ïò½ø³Ì»ò½ø³Ì×é·¢ĞÅºÅ
+    case __NR_rename: F_NO ;  break;// 38ÎÄ¼ş¸ÄÃû
+    case __NR_mkdir: F_NO ;  break;// 39´´½¨Ä¿Â¼
+    case __NR_rmdir: F_NO ;  break;// 40É¾³ıÄ¿Â¼
+    case __NR_dup:   break;// 41¸´ÖÆÒÑ´ò¿ªµÄÎÄ¼şÃèÊö×Ö
+    case __NR_pipe: F_NO ;  break;// 42´´½¨¹ÜµÀ
+    case __NR_times: F_NO ;  break;// 43È¡½ø³ÌÔËĞĞÊ±¼ä
     case __NR_prof:   break;// 44
-    case __NR_brk: F_YES ;  break;// 45 æ”¹å˜æ•°æ®æ®µç©ºé—´çš„åˆ†é…
-    case __NR_setgid: F_NO ;  break;// 46è®¾ç½®ç»„æ ‡å¿—å·
-    case __NR_getgid:  F_YES ; break;// 47è·å–ç»„æ ‡è¯†å·
-    case __NR_signal: F_NO ;  break;// 48 ä¿¡å·
-    case __NR_geteuid: F_YES ;  break;// 49è·å–æœ‰æ•ˆç”¨æˆ·æ ‡è¯†å·
-    case __NR_getegid: F_YES ;  break;// 50è·å–æœ‰æ•ˆç»„æ ‡è¯†å·
-    case __NR_acct: F_NO ;  break;// 51å¯ç”¨æˆ–ç¦æ­¢è¿›ç¨‹è®°è´¦
+    case __NR_brk: F_YES ;  break;// 45 ¸Ä±äÊı¾İ¶Î¿Õ¼äµÄ·ÖÅä
+    case __NR_setgid: F_NO ;  break;// 46ÉèÖÃ×é±êÖ¾ºÅ
+    case __NR_getgid:  F_YES ; break;// 47»ñÈ¡×é±êÊ¶ºÅ
+    case __NR_signal: F_NO ;  break;// 48 ĞÅºÅ
+    case __NR_geteuid: F_YES ;  break;// 49»ñÈ¡ÓĞĞ§ÓÃ»§±êÊ¶ºÅ
+    case __NR_getegid: F_YES ;  break;// 50»ñÈ¡ÓĞĞ§×é±êÊ¶ºÅ
+    case __NR_acct: F_NO ;  break;// 51ÆôÓÃ»ò½ûÖ¹½ø³Ì¼ÇÕË
     case __NR_umount2: F_NO ;  break;// 52
     case __NR_lock: F_NO ;  break;// 53
-    case __NR_ioctl:   break;// 54I/Oæ€»æ§åˆ¶å‡½æ•°
-    case __NR_fcntl:   break;// 55æ–‡ä»¶æ§åˆ¶
+    case __NR_ioctl:   break;// 54I/O×Ü¿ØÖÆº¯Êı
+    case __NR_fcntl:   break;// 55ÎÄ¼ş¿ØÖÆ
     case __NR_mpx:   break;// 56
     case __NR_setpgid: F_NO ;  break;// 57
     case __NR_ulimit:   break;// 58
     case __NR_oldolduname:   break;//59
-    case __NR_umask: F_NO ;  break;// 60è®¾ç½®æ–‡ä»¶æƒé™æ©ç 
+    case __NR_umask: F_NO ;  break;// 60ÉèÖÃÎÄ¼şÈ¨ÏŞÑÚÂë
     case __NR_chroot: F_NO ;  break;// 61
-    case __NR_ustat:   break;// 62å–æ–‡ä»¶ç³»ç»Ÿä¿¡æ¯
-    case __NR_dup2:   break;// 63æŒ‰æŒ‡å®šæ¡ä»¶å¤åˆ¶æ–‡ä»¶æè¿°å­—
+    case __NR_ustat:   break;// 62È¡ÎÄ¼şÏµÍ³ĞÅÏ¢
+    case __NR_dup2:   break;// 63°´Ö¸¶¨Ìõ¼ş¸´ÖÆÎÄ¼şÃèÊö×Ö
     case __NR_getppid:  F_YES ; break;// 64
     case __NR_getpgrp:  F_YES ; break;// 65
-    case __NR_setsid: F_NO ;  break;// 66è®¾ç½®ä¼šæ™¤æ ‡è¯†å·
-    case __NR_sigaction:  F_YES ; break;// 67è®¾ç½®å¯¹æŒ‡å®šä¿¡å·çš„å¤„ç†æ–¹æ³•
-    case __NR_sgetmask:   break;// 68å–å¾—ç°æœ‰é˜»å¡ä¿¡å·æ©ç ,å·²è¢«sigprocmaskä»£æ›¿
-    case __NR_ssetmask:   break;// 69ANSI Cçš„ä¿¡å·å¤„ç†å‡½æ•°,ä½œç”¨ç±»ä¼¼sigaction
-    case __NR_setreuid: F_NO ;  break;// 70åˆ†åˆ«è®¾ç½®çœŸå®å’Œæœ‰æ•ˆçš„ç”¨æˆ·æ ‡è¯†å·
-    case __NR_setregid: F_NO ;  break;// 71åˆ†åˆ«è®¾ç½®çœŸå®å’Œæœ‰æ•ˆçš„çš„ç»„æ ‡è¯†å·
-    case __NR_sigsuspend: F_NO ;  break;// 72æŒ‚èµ·è¿›ç¨‹ç­‰å¾…ç‰¹å®šä¿¡å·
-    case __NR_sigpending: F_NO ;  break;// 73ä¸ºæŒ‡å®šçš„è¢«é˜»å¡ä¿¡å·è®¾ç½®é˜Ÿåˆ—
-    case __NR_sethostname: F_NO ;  break;//74è®¾ç½®ä¸»æœºåç§°
-    case __NR_setrlimit: F_NO ;  break;// 75è®¾ç½®ç³»ç»Ÿèµ„æºä¸Šé™
-    case __NR_getrlimit:   break;// 76	/* Back compatible 2Gig limited rlimit */è·å–ç³»ç»Ÿèµ„æºä¸Šé™
-    case __NR_getrusage:   break;// 77è·å–ç³»ç»Ÿèµ„æºä½¿ç”¨æƒ…å†µ
-    case __NR_gettimeofday: F_NO ;  break;// 78å–æ—¶é—´å’Œæ—¶åŒº
-    case __NR_settimeofday: F_NO ;  break;//79è®¾ç½®æ—¶é—´å’Œæ—¶åŒº
-    case __NR_getgroups: F_YES ;  break;// 80è·å–åè¡¥ç»„æ ‡å¿—æ¸…å•
-    case __NR_setgroups: F_NO ;  break;// 81è®¾ç½®åè¡¥ç»„æ ‡å¿—æ¸…å•
-    case __NR_select: F_NO ;  break;// 82å¯¹å¤šè·¯åŒæ­¥I/Oè¿›è¡Œè½®è¯¢
-    case __NR_symlink: F_NO ;  break;// 83åˆ›å»ºç¬¦å·é“¾æ¥
+    case __NR_setsid: F_NO ;  break;// 66ÉèÖÃ»áÎî±êÊ¶ºÅ
+    case __NR_sigaction:  F_YES ; break;// 67ÉèÖÃ¶ÔÖ¸¶¨ĞÅºÅµÄ´¦Àí·½·¨
+    case __NR_sgetmask:   break;// 68È¡µÃÏÖÓĞ×èÈûĞÅºÅÑÚÂë,ÒÑ±»sigprocmask´úÌæ
+    case __NR_ssetmask:   break;// 69ANSI CµÄĞÅºÅ´¦Àíº¯Êı,×÷ÓÃÀàËÆsigaction
+    case __NR_setreuid: F_NO ;  break;// 70·Ö±ğÉèÖÃÕæÊµºÍÓĞĞ§µÄÓÃ»§±êÊ¶ºÅ
+    case __NR_setregid: F_NO ;  break;// 71·Ö±ğÉèÖÃÕæÊµºÍÓĞĞ§µÄµÄ×é±êÊ¶ºÅ
+    case __NR_sigsuspend: F_NO ;  break;// 72¹ÒÆğ½ø³ÌµÈ´ıÌØ¶¨ĞÅºÅ
+    case __NR_sigpending: F_NO ;  break;// 73ÎªÖ¸¶¨µÄ±»×èÈûĞÅºÅÉèÖÃ¶ÓÁĞ
+    case __NR_sethostname: F_NO ;  break;//74ÉèÖÃÖ÷»úÃû³Æ
+    case __NR_setrlimit: F_NO ;  break;// 75ÉèÖÃÏµÍ³×ÊÔ´ÉÏÏŞ
+    case __NR_getrlimit:   break;// 76	/* Back compatible 2Gig limited rlimit */»ñÈ¡ÏµÍ³×ÊÔ´ÉÏÏŞ
+    case __NR_getrusage:   break;// 77»ñÈ¡ÏµÍ³×ÊÔ´Ê¹ÓÃÇé¿ö
+    case __NR_gettimeofday: F_NO ;  break;// 78È¡Ê±¼äºÍÊ±Çø
+    case __NR_settimeofday: F_NO ;  break;//79ÉèÖÃÊ±¼äºÍÊ±Çø
+    case __NR_getgroups: F_YES ;  break;// 80»ñÈ¡ºó²¹×é±êÖ¾Çåµ¥
+    case __NR_setgroups: F_NO ;  break;// 81ÉèÖÃºó²¹×é±êÖ¾Çåµ¥
+    case __NR_select: F_NO ;  break;// 82¶Ô¶àÂ·Í¬²½I/O½øĞĞÂÖÑ¯
+    case __NR_symlink: F_NO ;  break;// 83´´½¨·ûºÅÁ´½Ó
     case __NR_oldlstat:   break;// 84
-    case __NR_readlink:  F_YES ; break;// 85è¯»ç¬¦å·é“¾æ¥çš„å€¼
-    case __NR_uselib: F_NO ;  break;// 86é€‰æ‹©è¦ä½¿ç”¨çš„äºŒè¿›åˆ¶å‡½æ•°åº“
-    case __NR_swapon: F_NO ;  break;// 87æ‰“å¼€äº¤æ¢æ–‡ä»¶å’Œè®¾å¤‡
-    case __NR_reboot: F_NO ;  break;// 88é‡æ–°å¯åŠ¨
-    case __NR_readdir: F_NO ;  break;// 89è¯»å–ç›®å½•é¡¹
-    case __NR_mmap: F_YES ; break;// 90æ˜ å°„è™šæ‹Ÿå†…å­˜é¡µ __NR_mmap
-    case __NR_munmap: F_YES ;  break;// 91å»é™¤å†…å­˜é¡µæ˜ å°„
-    case __NR_truncate:   break;// 92æˆªæ–­æ–‡ä»¶
-    case __NR_ftruncate:   break;// 93æˆªæ–­æ–‡ä»¶
-    case __NR_fchmod: F_NO ;  break;// 94æ”¹å˜æ–‡ä»¶æ–¹å¼
-    case __NR_fchown: F_NO ;  break;// 95æ”¹å˜æ–‡ä»¶çš„å±ä¸»æˆ–ç”¨æˆ·ç»„
+    case __NR_readlink:  F_YES ; break;// 85¶Á·ûºÅÁ´½ÓµÄÖµ
+    case __NR_uselib: F_NO ;  break;// 86Ñ¡ÔñÒªÊ¹ÓÃµÄ¶ş½øÖÆº¯Êı¿â
+    case __NR_swapon: F_NO ;  break;// 87´ò¿ª½»»»ÎÄ¼şºÍÉè±¸
+    case __NR_reboot: F_NO ;  break;// 88ÖØĞÂÆô¶¯
+    case __NR_readdir: F_NO ;  break;// 89¶ÁÈ¡Ä¿Â¼Ïî
+    case __NR_mmap: F_YES ; break;// 90Ó³ÉäĞéÄâÄÚ´æÒ³ __NR_mmap
+    case __NR_munmap: F_YES ;  break;// 91È¥³ıÄÚ´æÒ³Ó³Éä
+    case __NR_truncate:   break;// 92½Ø¶ÏÎÄ¼ş
+    case __NR_ftruncate:   break;// 93½Ø¶ÏÎÄ¼ş
+    case __NR_fchmod: F_NO ;  break;// 94¸Ä±äÎÄ¼ş·½Ê½
+    case __NR_fchown: F_NO ;  break;// 95¸Ä±äÎÄ¼şµÄÊôÖ÷»òÓÃ»§×é
     case __NR_getpriority:   break;// 96
     case __NR_setpriority: F_NO ;  break;// 97
     case __NR_profil:   break;// 98
-    case __NR_statfs:   break;// 99å–æ–‡ä»¶ç³»ç»Ÿä¿¡æ¯
-    case __NR_fstatfs:   break;//100å–æ–‡ä»¶ç³»ç»Ÿä¿¡æ¯
-    case __NR_ioperm: F_NO ;  break;//101è®¾ç½®ç«¯å£I/Oæƒé™
-    case __NR_socketcall: F_NO ;  break;//102socketç³»ç»Ÿè°ƒç”¨
+    case __NR_statfs:   break;// 99È¡ÎÄ¼şÏµÍ³ĞÅÏ¢
+    case __NR_fstatfs:   break;//100È¡ÎÄ¼şÏµÍ³ĞÅÏ¢
+    case __NR_ioperm: F_NO ;  break;//101ÉèÖÃ¶Ë¿ÚI/OÈ¨ÏŞ
+    case __NR_socketcall: F_NO ;  break;//102socketÏµÍ³µ÷ÓÃ
     case __NR_syslog: F_NO ;  break;//103
-    case __NR_setitimer: F_NO ;  break;//104è®¾ç½®è®¡æ—¶å™¨å€¼
-    case __NR_getitimer: F_NO ;  break;//105è·å–è®¡æ—¶å™¨å€¼
-    case __NR_stat:   break;//106å–æ–‡ä»¶çŠ¶æ€ä¿¡æ¯
-    case __NR_lstat:   break;//107å–æ–‡ä»¶çŠ¶æ€ä¿¡æ¯
-    case __NR_fstat:   break;//108å–æ–‡ä»¶çŠ¶æ€ä¿¡æ¯
+    case __NR_setitimer: F_NO ;  break;//104ÉèÖÃ¼ÆÊ±Æ÷Öµ
+    case __NR_getitimer: F_NO ;  break;//105»ñÈ¡¼ÆÊ±Æ÷Öµ
+    case __NR_stat:   break;//106È¡ÎÄ¼ş×´Ì¬ĞÅÏ¢
+    case __NR_lstat:   break;//107È¡ÎÄ¼ş×´Ì¬ĞÅÏ¢
+    case __NR_fstat:   break;//108È¡ÎÄ¼ş×´Ì¬ĞÅÏ¢
     case __NR_olduname:   break;//109
-    case __NR_iopl:F_NO ;   break;//110æ”¹å˜è¿›ç¨‹I/Oæƒé™çº§åˆ«
-    case __NR_vhangup: F_NO ;  break;//111æŒ‚èµ·å½“å‰ç»ˆç«¯
+    case __NR_iopl:F_NO ;   break;//110¸Ä±ä½ø³ÌI/OÈ¨ÏŞ¼¶±ğ
+    case __NR_vhangup: F_NO ;  break;//111¹ÒÆğµ±Ç°ÖÕ¶Ë
     case __NR_idle: F_NO ;  break;//112
-    case __NR_vm86old: F_NO ;  break;//113è¿›å…¥æ¨¡æ‹Ÿ8086æ¨¡å¼
-    case __NR_wait4: F_NO ;  break;//114ç­‰å¾…å­è¿›ç¨‹ç»ˆæ­¢
-    case __NR_swapoff: F_NO ;  break;//115å…³é—­äº¤æ¢æ–‡ä»¶å’Œè®¾å¤‡
-    case __NR_sysinfo:   break;//116å–å¾—ç³»ç»Ÿä¿¡æ¯
-    case __NR_ipc: F_NO ;  break;//117è¿›ç¨‹é—´é€šä¿¡æ€»æ§åˆ¶è°ƒç”¨
-    case __NR_fsync:   break;//118æŠŠæ–‡ä»¶åœ¨å†…å­˜ä¸­çš„éƒ¨åˆ†å†™å›ç£ç›˜
+    case __NR_vm86old: F_NO ;  break;//113½øÈëÄ£Äâ8086Ä£Ê½
+    case __NR_wait4: F_NO ;  break;//114µÈ´ı×Ó½ø³ÌÖÕÖ¹
+    case __NR_swapoff: F_NO ;  break;//115¹Ø±Õ½»»»ÎÄ¼şºÍÉè±¸
+    case __NR_sysinfo:   break;//116È¡µÃÏµÍ³ĞÅÏ¢
+    case __NR_ipc: F_NO ;  break;//117½ø³Ì¼äÍ¨ĞÅ×Ü¿ØÖÆµ÷ÓÃ
+    case __NR_fsync:   break;//118°ÑÎÄ¼şÔÚÄÚ´æÖĞµÄ²¿·ÖĞ´»Ø´ÅÅÌ
     case __NR_sigreturn:   break;//119
-    case __NR_clone: F_NO ;  break;//120 æŒ‰æŒ‡å®šæ¡ä»¶åˆ›å»ºå­è¿›ç¨‹
-    case __NR_setdomainname: F_NO ;  break;//121è®¾ç½®åŸŸå
-    case __NR_uname:	F_YES ;  break;//122 //è·å–å½“å‰UNIXç³»ç»Ÿçš„åç§°ã€ç‰ˆæœ¬å’Œä¸»æœºç­‰ä¿¡æ¯
-    case __NR_modify_ldt: F_NO ;  break;//123è¯»å†™è¿›ç¨‹çš„æœ¬åœ°æè¿°è¡¨
-    case __NR_adjtimex: F_NO ;  break;//124è°ƒæ•´ç³»ç»Ÿæ—¶é’Ÿ
-    case __NR_mprotect:   break;//125è®¾ç½®å†…å­˜æ˜ åƒä¿æŠ¤
-    case __NR_sigprocmask:   break;//126æ ¹æ®å‚æ•°å¯¹ä¿¡å·é›†ä¸­çš„ä¿¡å·æ‰§è¡Œé˜»å¡/è§£é™¤é˜»å¡ç­‰æ“ä½œ
-    case __NR_create_module:F_NO ;   break;//127åˆ›å»ºå¯è£…è½½çš„æ¨¡å—é¡¹
-    case __NR_init_module: F_NO ;  break;//128åˆå§‹åŒ–æ¨¡å—
-    case __NR_delete_module: F_NO ;  break;//129åˆ é™¤å¯è£…è½½çš„æ¨¡å—é¡¹
-    case __NR_get_kernel_syms: F_NO ;  break;//130å–å¾—æ ¸å¿ƒç¬¦å·,å·²è¢«query_moduleä»£æ›¿
-    case __NR_quotactl: F_NO ;  break;//131æ§åˆ¶ç£ç›˜é…é¢
-    case __NR_getpgid: F_YES ; break;//132è·å–æŒ‡å®šè¿›ç¨‹ç»„æ ‡è¯†å·
-    case __NR_fchdir: F_NO ;  break;//133æ”¹å˜å½“å‰å·¥ä½œç›®å½•
-    case __NR_bdflush: F_NO ;  break;//134æ§åˆ¶bdflushå®ˆæŠ¤è¿›ç¨‹
-    case __NR_sysfs:   break;//135å–æ ¸å¿ƒæ”¯æŒçš„æ–‡ä»¶ç³»ç»Ÿç±»å‹
-    case __NR_personality: F_NO ;  break;//136è®¾ç½®è¿›ç¨‹è¿è¡ŒåŸŸ
+    case __NR_clone: F_NO ;  break;//120 °´Ö¸¶¨Ìõ¼ş´´½¨×Ó½ø³Ì
+    case __NR_setdomainname: F_NO ;  break;//121ÉèÖÃÓòÃû
+    case __NR_uname:	F_YES ;  break;//122 //»ñÈ¡µ±Ç°UNIXÏµÍ³µÄÃû³Æ¡¢°æ±¾ºÍÖ÷»úµÈĞÅÏ¢
+    case __NR_modify_ldt: F_NO ;  break;//123¶ÁĞ´½ø³ÌµÄ±¾µØÃèÊö±í
+    case __NR_adjtimex: F_NO ;  break;//124µ÷ÕûÏµÍ³Ê±ÖÓ
+    case __NR_mprotect:   break;//125ÉèÖÃÄÚ´æÓ³Ïñ±£»¤
+    case __NR_sigprocmask:   break;//126¸ù¾İ²ÎÊı¶ÔĞÅºÅ¼¯ÖĞµÄĞÅºÅÖ´ĞĞ×èÈû/½â³ı×èÈûµÈ²Ù×÷
+    case __NR_create_module:F_NO ;   break;//127´´½¨¿É×°ÔØµÄÄ£¿éÏî
+    case __NR_init_module: F_NO ;  break;//128³õÊ¼»¯Ä£¿é
+    case __NR_delete_module: F_NO ;  break;//129É¾³ı¿É×°ÔØµÄÄ£¿éÏî
+    case __NR_get_kernel_syms: F_NO ;  break;//130È¡µÃºËĞÄ·ûºÅ,ÒÑ±»query_module´úÌæ
+    case __NR_quotactl: F_NO ;  break;//131¿ØÖÆ´ÅÅÌÅä¶î
+    case __NR_getpgid: F_YES ; break;//132»ñÈ¡Ö¸¶¨½ø³Ì×é±êÊ¶ºÅ
+    case __NR_fchdir: F_NO ;  break;//133¸Ä±äµ±Ç°¹¤×÷Ä¿Â¼
+    case __NR_bdflush: F_NO ;  break;//134¿ØÖÆbdflushÊØ»¤½ø³Ì
+    case __NR_sysfs:   break;//135È¡ºËĞÄÖ§³ÖµÄÎÄ¼şÏµÍ³ÀàĞÍ
+    case __NR_personality: F_NO ;  break;//136ÉèÖÃ½ø³ÌÔËĞĞÓò
     case __NR_afs_syscall: F_NO ;  break;//137 /* Syscall for Andrew File System */
-    case __NR_setfsuid: F_NO ;  break;//138è®¾ç½®æ–‡ä»¶ç³»ç»Ÿæ£€æŸ¥æ—¶ä½¿ç”¨çš„ç”¨æˆ·æ ‡è¯†å·
-    case __NR_setfsgid: F_NO ;  break;//139è®¾ç½®æ–‡ä»¶ç³»ç»Ÿæ£€æŸ¥æ—¶ä½¿ç”¨çš„ç»„æ ‡è¯†å·
-    case __NR__llseek: F_YES ;  break;//140åœ¨64ä½åœ°å€ç©ºé—´é‡Œç§»åŠ¨æ–‡ä»¶æŒ‡é’ˆ
-    case __NR_getdents: F_NO ;  break;//141è¯»å–ç›®å½•é¡¹
+    case __NR_setfsuid: F_NO ;  break;//138ÉèÖÃÎÄ¼şÏµÍ³¼ì²éÊ±Ê¹ÓÃµÄÓÃ»§±êÊ¶ºÅ
+    case __NR_setfsgid: F_NO ;  break;//139ÉèÖÃÎÄ¼şÏµÍ³¼ì²éÊ±Ê¹ÓÃµÄ×é±êÊ¶ºÅ
+    case __NR__llseek: F_YES ;  break;//140ÔÚ64Î»µØÖ·¿Õ¼äÀïÒÆ¶¯ÎÄ¼şÖ¸Õë
+    case __NR_getdents: F_NO ;  break;//141¶ÁÈ¡Ä¿Â¼Ïî
     case __NR__newselect: F_NO ;  break;//142
-    case __NR_flock: F_NO ;  break;//143æ–‡ä»¶åŠ /è§£é”
-    case __NR_msync:   break;//144å°†æ˜ å°„å†…å­˜ä¸­çš„æ•°æ®å†™å›ç£ç›˜
-    case __NR_readv:   break;//145ä»æ–‡ä»¶è¯»å…¥æ•°æ®åˆ°ç¼“å†²æ•°ç»„ä¸­
-    case __NR_writev:   break;//146å°†ç¼“å†²æ•°ç»„é‡Œçš„æ•°æ®å†™å…¥æ–‡ä»¶
-    case __NR_getsid:   break;//147è·å–ä¼šæ™¤æ ‡è¯†å·
+    case __NR_flock: F_NO ;  break;//143ÎÄ¼ş¼Ó/½âËø
+    case __NR_msync:   break;//144½«Ó³ÉäÄÚ´æÖĞµÄÊı¾İĞ´»Ø´ÅÅÌ
+    case __NR_readv:   break;//145´ÓÎÄ¼ş¶ÁÈëÊı¾İµ½»º³åÊı×éÖĞ
+    case __NR_writev:   break;//146½«»º³åÊı×éÀïµÄÊı¾İĞ´ÈëÎÄ¼ş
+    case __NR_getsid:   break;//147»ñÈ¡»áÎî±êÊ¶ºÅ
     case __NR_fdatasync:   break;//148
-    case __NR__sysctl: F_NO ;  break;//149è¯»/å†™ç³»ç»Ÿå‚æ•°
-    case __NR_mlock: F_NO ;  break;//150å†…å­˜é¡µé¢åŠ é”
-    case __NR_munlock: F_NO ;  break;//151å†…å­˜é¡µé¢è§£é”
-    case __NR_mlockall: F_NO ;  break;//152è°ƒç”¨è¿›ç¨‹æ‰€æœ‰å†…å­˜é¡µé¢åŠ é”
-    case __NR_munlockall: F_NO ;  break;//153è°ƒç”¨è¿›ç¨‹æ‰€æœ‰å†…å­˜é¡µé¢è§£é”
-    case __NR_sched_setparam: F_NO ;  break;//154è®¾ç½®è¿›ç¨‹çš„è°ƒåº¦å‚æ•°
-    case __NR_sched_getparam:   break;//155å–å¾—è¿›ç¨‹çš„è°ƒåº¦å‚æ•°
-    case __NR_sched_setscheduler: F_NO ;  break;//156å–å¾—æŒ‡å®šè¿›ç¨‹çš„è°ƒåº¦ç­–ç•¥
-    case __NR_sched_getscheduler:   break;//157è®¾ç½®æŒ‡å®šè¿›ç¨‹çš„è°ƒåº¦ç­–ç•¥å’Œå‚æ•°
-    case __NR_sched_yield: F_NO ;  break;//158è¿›ç¨‹ä¸»åŠ¨è®©å‡ºå¤„ç†å™¨,å¹¶å°†è‡ªå·±ç­‰å€™è°ƒåº¦é˜Ÿåˆ—é˜Ÿå°¾
-    case __NR_sched_get_priority_max:   break;//159å–å¾—é™æ€ä¼˜å…ˆçº§çš„ä¸Šé™
-    case __NR_sched_get_priority_min:   break;//160å–å¾—é™æ€ä¼˜å…ˆçº§çš„ä¸‹é™
-    case __NR_sched_rr_get_interval:   break;//161å–å¾—æŒ‰RRç®—æ³•è°ƒåº¦çš„å®æ—¶è¿›ç¨‹çš„æ—¶é—´ç‰‡é•¿åº¦
-    case __NR_nanosleep: F_NO ;  break;//162ä½¿è¿›ç¨‹ç¡çœ æŒ‡å®šçš„æ—¶é—´
-    case __NR_mremap:   break;//163é‡æ–°æ˜ å°„è™šæ‹Ÿå†…å­˜åœ°å€
-    case __NR_setresuid: F_NO ;  break;//164åˆ†åˆ«è®¾ç½®çœŸå®çš„,æœ‰æ•ˆçš„å’Œä¿å­˜è¿‡çš„ç”¨æˆ·æ ‡è¯†å·
-    case __NR_getresuid:   break;//165åˆ†åˆ«è·å–çœŸå®çš„,æœ‰æ•ˆçš„å’Œä¿å­˜è¿‡çš„ç”¨æˆ·æ ‡è¯†å·
-    case __NR_vm86: F_NO ;  break;//166è¿›å…¥æ¨¡æ‹Ÿ8086æ¨¡å¼
-    case __NR_query_module: F_NO ;  break;//167æŸ¥è¯¢æ¨¡å—ä¿¡æ¯
-    case __NR_poll: F_NO ;  break;//168I/Oå¤šè·¯è½¬æ¢
-    case __NR_nfsservctl:F_NO ;   break;//169å¯¹NFSå®ˆæŠ¤è¿›ç¨‹è¿›è¡Œæ§åˆ¶
-    case __NR_setresgid: F_NO ;  break;//170åˆ†åˆ«è®¾ç½®çœŸå®çš„,æœ‰æ•ˆçš„å’Œä¿å­˜è¿‡çš„ç»„æ ‡è¯†å·
-    case __NR_getresgid:   break;//171åˆ†åˆ«è·å–çœŸå®çš„,æœ‰æ•ˆçš„å’Œä¿å­˜è¿‡çš„ç»„æ ‡è¯†å·
-    case __NR_prctl : F_NO ;  break;//172å¯¹è¿›ç¨‹è¿›è¡Œç‰¹å®šæ“ä½œ
+    case __NR__sysctl: F_NO ;  break;//149¶Á/Ğ´ÏµÍ³²ÎÊı
+    case __NR_mlock: F_NO ;  break;//150ÄÚ´æÒ³Ãæ¼ÓËø
+    case __NR_munlock: F_NO ;  break;//151ÄÚ´æÒ³Ãæ½âËø
+    case __NR_mlockall: F_NO ;  break;//152µ÷ÓÃ½ø³ÌËùÓĞÄÚ´æÒ³Ãæ¼ÓËø
+    case __NR_munlockall: F_NO ;  break;//153µ÷ÓÃ½ø³ÌËùÓĞÄÚ´æÒ³Ãæ½âËø
+    case __NR_sched_setparam: F_NO ;  break;//154ÉèÖÃ½ø³ÌµÄµ÷¶È²ÎÊı
+    case __NR_sched_getparam:   break;//155È¡µÃ½ø³ÌµÄµ÷¶È²ÎÊı
+    case __NR_sched_setscheduler: F_NO ;  break;//156È¡µÃÖ¸¶¨½ø³ÌµÄµ÷¶È²ßÂÔ
+    case __NR_sched_getscheduler:   break;//157ÉèÖÃÖ¸¶¨½ø³ÌµÄµ÷¶È²ßÂÔºÍ²ÎÊı
+    case __NR_sched_yield: F_NO ;  break;//158½ø³ÌÖ÷¶¯ÈÃ³ö´¦ÀíÆ÷,²¢½«×Ô¼ºµÈºòµ÷¶È¶ÓÁĞ¶ÓÎ²
+    case __NR_sched_get_priority_max:   break;//159È¡µÃ¾²Ì¬ÓÅÏÈ¼¶µÄÉÏÏŞ
+    case __NR_sched_get_priority_min:   break;//160È¡µÃ¾²Ì¬ÓÅÏÈ¼¶µÄÏÂÏŞ
+    case __NR_sched_rr_get_interval:   break;//161È¡µÃ°´RRËã·¨µ÷¶ÈµÄÊµÊ±½ø³ÌµÄÊ±¼äÆ¬³¤¶È
+    case __NR_nanosleep: F_NO ;  break;//162Ê¹½ø³ÌË¯ÃßÖ¸¶¨µÄÊ±¼ä
+    case __NR_mremap:   break;//163ÖØĞÂÓ³ÉäĞéÄâÄÚ´æµØÖ·
+    case __NR_setresuid: F_NO ;  break;//164·Ö±ğÉèÖÃÕæÊµµÄ,ÓĞĞ§µÄºÍ±£´æ¹ıµÄÓÃ»§±êÊ¶ºÅ
+    case __NR_getresuid:   break;//165·Ö±ğ»ñÈ¡ÕæÊµµÄ,ÓĞĞ§µÄºÍ±£´æ¹ıµÄÓÃ»§±êÊ¶ºÅ
+    case __NR_vm86: F_NO ;  break;//166½øÈëÄ£Äâ8086Ä£Ê½
+    case __NR_query_module: F_NO ;  break;//167²éÑ¯Ä£¿éĞÅÏ¢
+    case __NR_poll: F_NO ;  break;//168I/O¶àÂ·×ª»»
+    case __NR_nfsservctl:F_NO ;   break;//169¶ÔNFSÊØ»¤½ø³Ì½øĞĞ¿ØÖÆ
+    case __NR_setresgid: F_NO ;  break;//170·Ö±ğÉèÖÃÕæÊµµÄ,ÓĞĞ§µÄºÍ±£´æ¹ıµÄ×é±êÊ¶ºÅ
+    case __NR_getresgid:   break;//171·Ö±ğ»ñÈ¡ÕæÊµµÄ,ÓĞĞ§µÄºÍ±£´æ¹ıµÄ×é±êÊ¶ºÅ
+    case __NR_prctl : F_NO ;  break;//172¶Ô½ø³Ì½øĞĞÌØ¶¨²Ù×÷
     case __NR_rt_sigreturn:   break;//173
-    case __NR_rt_sigaction:   break;//174è®¾ç½®å¯¹æŒ‡å®šä¿¡å·çš„å¤„ç†æ–¹æ³•
-    case __NR_rt_sigprocmask:   break;//175æ ¹æ®å‚æ•°å¯¹ä¿¡å·é›†ä¸­çš„ä¿¡å·æ‰§è¡Œé˜»å¡/è§£é™¤é˜»å¡ç­‰æ“ä½œ
-    case __NR_rt_sigpending:   break;//176ä¸ºæŒ‡å®šçš„è¢«é˜»å¡ä¿¡å·è®¾ç½®é˜Ÿåˆ—
+    case __NR_rt_sigaction:   break;//174ÉèÖÃ¶ÔÖ¸¶¨ĞÅºÅµÄ´¦Àí·½·¨
+    case __NR_rt_sigprocmask:   break;//175¸ù¾İ²ÎÊı¶ÔĞÅºÅ¼¯ÖĞµÄĞÅºÅÖ´ĞĞ×èÈû/½â³ı×èÈûµÈ²Ù×÷
+    case __NR_rt_sigpending:   break;//176ÎªÖ¸¶¨µÄ±»×èÈûĞÅºÅÉèÖÃ¶ÓÁĞ
     case __NR_rt_sigtimedwait:   break;//177
     case __NR_rt_sigqueueinfo:   break;//178
-    case __NR_rt_sigsuspend:   break;//179æŒ‚èµ·è¿›ç¨‹ç­‰å¾…ç‰¹å®šä¿¡å·
-    case 180:   break;//180 //__NR_pread64 __NR_preadå¯¹æ–‡ä»¶éšæœºè¯»
-    case 181:   break;//181//__NR_pwrite64 __NR_pwrite(redhat9)å¯¹æ–‡ä»¶éšæœºå†™
+    case __NR_rt_sigsuspend:   break;//179¹ÒÆğ½ø³ÌµÈ´ıÌØ¶¨ĞÅºÅ
+    case 180:   break;//180 //__NR_pread64 __NR_pread¶ÔÎÄ¼şËæ»ú¶Á
+    case 181:   break;//181//__NR_pwrite64 __NR_pwrite(redhat9)¶ÔÎÄ¼şËæ»úĞ´
     case __NR_chown: F_NO ;  break;//182
     case __NR_getcwd:   break;//183
-    case __NR_capget:   break;//184è·å–è¿›ç¨‹æƒé™
-    case __NR_capset: F_NO ;  break;//185 è®¾ç½®è¿›ç¨‹æƒé™
+    case __NR_capget:   break;//184»ñÈ¡½ø³ÌÈ¨ÏŞ
+    case __NR_capset: F_NO ;  break;//185 ÉèÖÃ½ø³ÌÈ¨ÏŞ
     case __NR_sigaltstack:   break;//186
-    case __NR_sendfile: F_NO ;  break;//187åœ¨æ–‡ä»¶æˆ–ç«¯å£é—´ä¼ è¾“æ•°æ®
+    case __NR_sendfile: F_NO ;  break;//187ÔÚÎÄ¼ş»ò¶Ë¿Ú¼ä´«ÊäÊı¾İ
     case __NR_getpmsg: F_NO ;  break;//188	/* some people actually want streams */
     case __NR_putpmsg: F_NO ;  break;//189	/* some people actually want streams */
-    case __NR_vfork: F_NO ;  break;//190åˆ›å»ºä¸€ä¸ªå­è¿›ç¨‹ï¼Œä»¥ä¾›æ‰§è¡Œæ–°ç¨‹åºï¼Œå¸¸ä¸execveç­‰åŒæ—¶ä½¿ç”¨
+    case __NR_vfork: F_NO ;  break;//190´´½¨Ò»¸ö×Ó½ø³Ì£¬ÒÔ¹©Ö´ĞĞĞÂ³ÌĞò£¬³£ÓëexecveµÈÍ¬Ê±Ê¹ÓÃ
     case __NR_ugetrlimit:   break;//191	/* SuS compliant getrlimit */
-    case __NR_mmap2:  F_YES; break;//192æ˜ å°„è™šæ‹Ÿå†…å­˜é¡µ
-    case __NR_truncate64:   break;//193æˆªæ–­æ–‡ä»¶
-    case __NR_ftruncate64:   break;//194æˆªæ–­æ–‡ä»¶
+    case __NR_mmap2:  F_YES; break;//192Ó³ÉäĞéÄâÄÚ´æÒ³
+    case __NR_truncate64:   break;//193½Ø¶ÏÎÄ¼ş
+    case __NR_ftruncate64:   break;//194½Ø¶ÏÎÄ¼ş
     case __NR_stat64:   break;//195
     case __NR_lstat64:   break;//196
     case __NR_fstat64: F_YES ;  break;//197
-    case __NR_lchown32:   break;//198æ”¹å˜æ–‡ä»¶çš„å±ä¸»æˆ–ç”¨æˆ·ç»„
-    case __NR_getuid32: F_YES ;  break;//199è·å–ç”¨æˆ·æ ‡è¯†å·
-    case __NR_getgid32: F_YES ;  break;//200è·å–ç»„æ ‡è¯†å·
-    case __NR_geteuid32:F_YES ;   break;//201è·å–æœ‰æ•ˆç”¨æˆ·æ ‡è¯†å·
-    case __NR_getegid32: F_YES ;  break;//202è·å–æœ‰æ•ˆç»„æ ‡è¯†å·
-    case __NR_setreuid32: F_NO ;  break;//203åˆ†åˆ«è®¾ç½®çœŸå®å’Œæœ‰æ•ˆçš„ç”¨æˆ·æ ‡è¯†å·
-    case __NR_setregid32: F_NO ;  break;//204åˆ†åˆ«è®¾ç½®çœŸå®å’Œæœ‰æ•ˆçš„çš„ç»„æ ‡è¯†å·
-    case __NR_getgroups32:F_YES ;   break;//205è·å–åè¡¥ç»„æ ‡å¿—æ¸…å•
-    case __NR_setgroups32: F_NO ;  break;//206è®¾ç½®åè¡¥ç»„æ ‡å¿—æ¸…å•
-    case __NR_fchown32: F_NO ;  break;//207æ”¹å˜æ–‡ä»¶çš„å±ä¸»æˆ–ç”¨æˆ·ç»„
-    case __NR_setresuid32: F_NO ;  break;//208åˆ†åˆ«è®¾ç½®çœŸå®å’Œæœ‰æ•ˆçš„ç”¨æˆ·æ ‡è¯†å·
-    case __NR_getresuid32: F_YES ;  break;//209åˆ†åˆ«è·å–çœŸå®çš„,æœ‰æ•ˆçš„å’Œä¿å­˜è¿‡çš„ç”¨æˆ·æ ‡è¯†å·
-    case __NR_setresgid32: F_NO ;  break;//210åˆ†åˆ«è®¾ç½®çœŸå®çš„,æœ‰æ•ˆçš„å’Œä¿å­˜è¿‡çš„ç»„æ ‡è¯†å·
-    case __NR_getresgid32:F_YES ;   break;//211åˆ†åˆ«è·å–çœŸå®çš„,æœ‰æ•ˆçš„å’Œä¿å­˜è¿‡çš„ç»„æ ‡è¯†å·
-    case __NR_chown32: F_NO ;  break;//212æ”¹å˜æ–‡ä»¶çš„å±ä¸»æˆ–ç”¨æˆ·ç»„
-    case __NR_setuid32: F_NO ;  break;//213è®¾ç½®ç”¨æˆ·æ ‡å¿—å·
-    case __NR_setgid32: F_NO ;  break;//214è®¾ç½®ç»„æ ‡å¿—å·
-    case __NR_setfsuid32: F_NO ;  break;//215è®¾ç½®æ–‡ä»¶ç³»ç»Ÿæ£€æŸ¥æ—¶ä½¿ç”¨çš„ç”¨æˆ·æ ‡è¯†å·
-    case __NR_setfsgid32: F_NO ;  break;//216è®¾ç½®æ–‡ä»¶ç³»ç»Ÿæ£€æŸ¥æ—¶ä½¿ç”¨çš„ç»„æ ‡è¯†å·
+    case __NR_lchown32:   break;//198¸Ä±äÎÄ¼şµÄÊôÖ÷»òÓÃ»§×é
+    case __NR_getuid32: F_YES ;  break;//199»ñÈ¡ÓÃ»§±êÊ¶ºÅ
+    case __NR_getgid32: F_YES ;  break;//200»ñÈ¡×é±êÊ¶ºÅ
+    case __NR_geteuid32:F_YES ;   break;//201»ñÈ¡ÓĞĞ§ÓÃ»§±êÊ¶ºÅ
+    case __NR_getegid32: F_YES ;  break;//202»ñÈ¡ÓĞĞ§×é±êÊ¶ºÅ
+    case __NR_setreuid32: F_NO ;  break;//203·Ö±ğÉèÖÃÕæÊµºÍÓĞĞ§µÄÓÃ»§±êÊ¶ºÅ
+    case __NR_setregid32: F_NO ;  break;//204·Ö±ğÉèÖÃÕæÊµºÍÓĞĞ§µÄµÄ×é±êÊ¶ºÅ
+    case __NR_getgroups32:F_YES ;   break;//205»ñÈ¡ºó²¹×é±êÖ¾Çåµ¥
+    case __NR_setgroups32: F_NO ;  break;//206ÉèÖÃºó²¹×é±êÖ¾Çåµ¥
+    case __NR_fchown32: F_NO ;  break;//207¸Ä±äÎÄ¼şµÄÊôÖ÷»òÓÃ»§×é
+    case __NR_setresuid32: F_NO ;  break;//208·Ö±ğÉèÖÃÕæÊµºÍÓĞĞ§µÄÓÃ»§±êÊ¶ºÅ
+    case __NR_getresuid32: F_YES ;  break;//209·Ö±ğ»ñÈ¡ÕæÊµµÄ,ÓĞĞ§µÄºÍ±£´æ¹ıµÄÓÃ»§±êÊ¶ºÅ
+    case __NR_setresgid32: F_NO ;  break;//210·Ö±ğÉèÖÃÕæÊµµÄ,ÓĞĞ§µÄºÍ±£´æ¹ıµÄ×é±êÊ¶ºÅ
+    case __NR_getresgid32:F_YES ;   break;//211·Ö±ğ»ñÈ¡ÕæÊµµÄ,ÓĞĞ§µÄºÍ±£´æ¹ıµÄ×é±êÊ¶ºÅ
+    case __NR_chown32: F_NO ;  break;//212¸Ä±äÎÄ¼şµÄÊôÖ÷»òÓÃ»§×é
+    case __NR_setuid32: F_NO ;  break;//213ÉèÖÃÓÃ»§±êÖ¾ºÅ
+    case __NR_setgid32: F_NO ;  break;//214ÉèÖÃ×é±êÖ¾ºÅ
+    case __NR_setfsuid32: F_NO ;  break;//215ÉèÖÃÎÄ¼şÏµÍ³¼ì²éÊ±Ê¹ÓÃµÄÓÃ»§±êÊ¶ºÅ
+    case __NR_setfsgid32: F_NO ;  break;//216ÉèÖÃÎÄ¼şÏµÍ³¼ì²éÊ±Ê¹ÓÃµÄ×é±êÊ¶ºÅ
     case __NR_pivot_root:   break;//217
     case __NR_mincore: F_NO ;  break;//218
     case __NR_madvise:   break;//219
         //case __NR_madvise1:   break;//219	/* delete when C lib stub is removed */
     case __NR_getdents64: F_YES ;   break;//220
-    case __NR_fcntl64: F_YES ;   break;//221æ–‡ä»¶æ§åˆ¶
+    case __NR_fcntl64: F_YES ;   break;//221ÎÄ¼ş¿ØÖÆ
     case 223:   break;//223	For RH9 __NR_security/* syscall for security modules */ //For EL5 /* 223 is unused */
     case __NR_gettid:   break;//224
     case __NR_readahead:   break;//225
@@ -809,8 +812,8 @@ int flimit(long orig_eax)
     case __NR_removexattr:   break;//235
     case __NR_lremovexattr:   break;//236
     case __NR_fremovexattr:   break;//237
-    case __NR_tkill: F_NO ;  break;//238å‘è¿›ç¨‹æˆ–è¿›ç¨‹ç»„å‘ä¿¡å·
-    case __NR_sendfile64: F_NO ;  break;//239åœ¨æ–‡ä»¶æˆ–ç«¯å£é—´ä¼ è¾“æ•°æ®
+    case __NR_tkill: F_NO ;  break;//238Ïò½ø³Ì»ò½ø³Ì×é·¢ĞÅºÅ
+    case __NR_sendfile64: F_NO ;  break;//239ÔÚÎÄ¼ş»ò¶Ë¿Ú¼ä´«ÊäÊı¾İ
     case __NR_futex:   break;//240
     case __NR_sched_setaffinity: F_NO ;  break;//241
     case __NR_sched_getaffinity:   break;//242
@@ -872,5 +875,6 @@ int flimit(long orig_eax)
 // #define	SIGIO		29	/* I/O now possible (4.2 BSD).  */
 // #define	SIGPWR		30	/* Power failure restart (System V).  */
 // #define SIGSYS		31	/* Bad system call.  */
+
 
 
