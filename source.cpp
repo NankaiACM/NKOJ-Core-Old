@@ -505,6 +505,35 @@ int main(){
             finish (CE);
         }
     }
+    
+    //compile special judge (online support for c++)
+    if(is_spj == 1){
+        string spj_compile_command = "g++" + path["spj"] + ".cpp -o " + path["spj"]; 
+        cout<< "spj compile command:" << spj_compile_command << endl;
+        pid = fork();
+        if(pid == 0) {
+            alarm(10);
+            signal(SIGALRM, [](int sig){exit(-1);});
+            int ret = system(spj_compile_command.c_str ());
+            unsigned int sec = 10 - alarm(0);
+            cout << "spj compile time is " << sec << " seconds" << endl;
+            if(WIFEXITED(ret))
+                exit(WEXITSTATUS(ret));
+            raise(WTERMSIG(ret));
+        } else {
+            int status;
+            wait(&status);
+            if(!WIFEXITED(status)) {
+                cerr << "spj compiler process exited unexpectedly... " << WTERMSIG(status) << endl;
+                return WTERMSIG(status);
+            }
+            status = WEXITSTATUS(status);
+            cout << "spj compiler return code is : " << status << endl;
+            if(status != 0) {
+                finish (CE);
+            }
+        }
+    }
 
     cout << "judge" << endl;
     cout << "solution_id: " << param["sid"] << endl;
