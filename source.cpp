@@ -27,6 +27,7 @@
 #define AC	107	//Accept
 #define PE	108	//Presentation Error
 #define FL	109	//Function Limit Exceed
+#define DM	110	//Detailed Mode
 #define SW	118	//System Error
 
 #include <iostream>
@@ -581,18 +582,22 @@ int main(){
         result = SW;
         unsigned total_time = 0;
         unlink (path["result"].c_str ());
-        ofstream of(path["result"].c_str (), ios_base::app | ios_base::out);
         for (unsigned i = 1; i <= cases; i++)
         {
             result = dotest(i);
             total_time += real_time;
             real_time = total_time;
 
+            if (result == AC) case_AC++;
+
             cout << "total time is: " << total_time << endl;
-            of << result << endl;
         }
+
         re_time();
-        cout << "end" << endl;
+
+        if (cases == case_AC)
+            finish (AC);
+        finish (DM);
         return 0;
     }
     cout << "should not return from main..." << endl;
